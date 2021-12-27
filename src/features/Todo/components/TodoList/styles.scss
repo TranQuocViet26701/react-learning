@@ -1,0 +1,11 @@
+.completed {
+    color: #ccc;
+    text-decoration: line-through;
+    font-style: italic;
+}
+
+.todo-item {
+    font-size: 1.125rem;
+
+    cursor: pointer;
+}

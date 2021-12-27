@@ -1,0 +1,14 @@
+.album {
+    margin: 0;
+    padding: 0 12px;
+
+    & > img {
+        width: 225px;
+        border-radius: 5px;
+    }
+
+    & > h4 {
+        margin: 0;
+        color: #fff;
+    }
+}
