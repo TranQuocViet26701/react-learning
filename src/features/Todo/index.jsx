@@ -1,30 +1,42 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TodoList from './components/TodoList';
+import { v4 as uuid } from 'uuid';
+
+const initTodoList = [
+  {
+    id: uuid(),
+    name: 'Sleep',
+    status: 'new',
+  },
+  {
+    id: uuid(),
+    name: 'Eat',
+    status: 'new',
+  },
+  {
+    id: uuid(),
+    name: 'Study',
+    status: 'completed',
+  },
+  {
+    id: uuid(),
+    name: 'Play',
+    status: 'new',
+  },
+];
 
 function TodoFeature() {
-  const [todoList, setTodoList] = useState([
-    {
-      id: 1,
-      name: 'Sleep',
-      status: 'new',
-    },
-    {
-      id: 2,
-      name: 'Eat',
-      status: 'new',
-    },
-    {
-      id: 3,
-      name: 'Study',
-      status: 'completed',
-    },
-    {
-      id: 4,
-      name: 'Play',
-      status: 'new',
-    },
-  ]);
+  const [todoList, setTodoList] = useState([]);
   const [filterStatus, setFilterStatus] = useState('all');
+
+  useEffect(() => {
+    const todos = localStorage.getItem('todoList')
+      ? JSON.parse(localStorage.getItem('todoList'))
+      : initTodoList;
+
+    // console.log(todos);
+    setTodoList(todos);
+  }, []);
 
   const handleTodoClick = (id) => {
     const newTodoList = [...todoList];
@@ -36,20 +48,54 @@ function TodoFeature() {
         status: newTodoList[index].status === 'new' ? 'completed' : 'new',
       };
 
+    localStorage.setItem('todoList', JSON.stringify(newTodoList));
+    setTodoList(newTodoList);
+  };
+
+  const handleShowTodoClick = (option) => {
+    setFilterStatus(option);
+  };
+
+  const handleRemoveTodoClick = (id) => {
+    const index = todoList.findIndex((todo) => todo.id === id);
+    if (index < 0) return;
+
+    const newTodoList = [...todoList];
+    newTodoList.splice(index, 1);
+
+    localStorage.setItem('todoList', JSON.stringify(newTodoList));
+    setTodoList(newTodoList);
+  };
+
+  const handleAddTodo = (value) => {
+    if (!value) return;
+
+    const newTodo = {
+      id: uuid(),
+      name: value,
+      status: 'new',
+    };
+
+    const newTodoList = [...todoList];
+    newTodoList.unshift(newTodo);
+
+    localStorage.setItem('todoList', JSON.stringify(newTodoList));
     setTodoList(newTodoList);
   };
 
   const filteredTodoList = todoList.filter(
     (todo) => filterStatus === 'all' || filterStatus === todo.status
   );
+
   return (
-    <div>
-      <TodoList todoList={filteredTodoList} onTodoClick={handleTodoClick} />
-      <button onClick={() => setFilterStatus('all')}>Show All</button>
-      <button onClick={() => setFilterStatus('new')}>Show New</button>
-      <button onClick={() => setFilterStatus('completed')}>
-        Show Completed
-      </button>
+    <div className="todo-feature">
+      <TodoList
+        todoList={filteredTodoList}
+        onTodoClick={handleTodoClick}
+        onShowTodoClick={handleShowTodoClick}
+        onRemoveTodo={handleRemoveTodoClick}
+        onAddTodo={handleAddTodo}
+      />
     </div>
   );
 }

@@ -1,11 +1,101 @@
-.completed {
-    color: #ccc;
-    text-decoration: line-through;
-    font-style: italic;
-}
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
-.todo-item {
-    font-size: 1.125rem;
+.todo-list {
+    font-family: "Poppins", sans-serif;
+    width: 400px;
+    max-width: 100%;
 
-    cursor: pointer;
+    & > h2 {
+        font-size: 5rem;
+        margin: 0;
+        text-align: center;
+
+        color: #557c55;
+    }
+
+    &__todos {
+        padding: 0;
+        background-color: #fff;
+
+        border-radius: 5px;
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+        & input {
+            width: 100%;
+            margin: 0;
+            padding: 10px 20px 10px;
+
+            border: none;
+            border-radius: 5px 5px 0 0;
+            border-bottom: 1px solid #eee;
+
+            font-size: 1.5rem;
+        }
+
+        & input::placeholder {
+            color: #ccc;
+        }
+
+        & input:focus{
+            outline-color: #557c55;
+        }
+    }
+
+    & .todo-item {
+        margin: 0;
+        padding: 10px 20px 10px;
+
+        border-bottom: 1px solid #eee;
+
+        font-size: 1.5rem;
+        list-style: none;
+
+        cursor: pointer;
+    }
+
+    & .todo-item:last-child {
+        border-bottom: none;
+    }
+
+    & .completed {
+        color: #ccc;
+        text-decoration: line-through;
+    }
+
+    & small {
+        display: block;
+        width: 100%;
+        margin: 2rem 0;
+        text-align: center;
+
+        color: #b5b5b5;
+    }
+
+    & .show-btn {
+        display: flex;
+        margin: 0 0 25px;
+        justify-content: space-between;
+
+        & button {
+            width: 32%;
+            padding: 10px 0;
+
+            border-radius: 10px;
+            border: none;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            background-color: #557c55;
+
+            font-family: "Poppins", sans-serif;
+            font-weight: bold;
+            color: #fff;
+
+            transition: all 0.25s ease;
+        }
+
+        & button:hover {
+            transform: translateY(-2px);
+            box-shadow: rgba(85, 124, 85, 0.4) 0px 5px, rgba(85, 124, 85, 0.3) 0px 10px, rgba(85, 124, 85, 0.2) 0px 15px,
+                rgba(85, 124, 85, 0.1) 0px 20px, rgba(85, 124, 85, 0.05) 0px 25px;
+        }
+    }
 }

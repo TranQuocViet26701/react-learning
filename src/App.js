@@ -1,4 +1,4 @@
-// import './App.scss';
+import './App.scss';
 import TodoFeature from './features/Todo';
 
 function App() {

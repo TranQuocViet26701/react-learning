@@ -1,8 +1,18 @@
-.App {
+* {
+  box-sizing: border-box;
+}
+
+.todo-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
   margin: 0;
   padding: 0;
+  height: 100%;
+  min-height: 100vh;
 
-  height: 100vh;
-
-  background-color: #180c24;
+  background-color: #F2FFE9;
 }
+
+
