@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './styles.scss';
+import TodoForm from '../TodoForm';
 
 TodoList.propTypes = {
   todoList: PropTypes.array,
@@ -19,7 +20,9 @@ TodoList.defaultProps = {
   onAddTodo: null,
 };
 
-function TodoList({ todoList, onTodoClick, onShowTodoClick, onRemoveTodo, onAddTodo }) {
+function TodoList(props) {
+  const { todoList, onTodoClick, onShowTodoClick, onRemoveTodo, onAddTodo } =
+    props;
   const [todoText, setTodoText] = useState('');
 
   const handleChange = (e) => {
@@ -52,9 +55,15 @@ function TodoList({ todoList, onTodoClick, onShowTodoClick, onRemoveTodo, onAddT
     onRemoveTodo(id);
   };
 
+  const handleSubmitTodoForm = (values) => {
+    console.log('Hanlde Submit TodoForm: ', values);
+    if (onAddTodo) onAddTodo(values['title']);
+  };
+
   return (
     <div className="todo-list">
       <h2>todos</h2>
+      <TodoForm onSubmit={handleSubmitTodoForm} />
       <ul className="todo-list__todos">
         <form onSubmit={handleSubmit}>
           <input
