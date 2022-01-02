@@ -20,10 +20,10 @@ function InputField(props) {
   const { form, name, label, disabled } = props;
   const {
     control,
-    formState: { errors, touchedFields },
+    formState: { errors },
   } = form;
 
-  const hasError = touchedFields[name] && errors[name];
+  const hasError = !!errors[name];
 
   return (
     <Controller
@@ -34,12 +34,13 @@ function InputField(props) {
           onChange={onChange}
           onBlur={onBlur}
           value={value}
+          sx={{ my: 1 }}
           fullWidth
-          id="outlined-basic"
+          id={name}
           label={label}
           variant="outlined"
           disabled={disabled}
-          error={!!hasError}
+          error={hasError}
           helperText={errors[name]?.message}
         />
       )}

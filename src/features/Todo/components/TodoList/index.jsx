@@ -56,7 +56,6 @@ function TodoList(props) {
   };
 
   const handleSubmitTodoForm = (values) => {
-    console.log('Hanlde Submit TodoForm: ', values);
     if (onAddTodo) onAddTodo(values['title']);
   };
 
