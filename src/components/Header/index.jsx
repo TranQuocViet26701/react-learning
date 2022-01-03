@@ -1,3 +1,4 @@
+import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   AppBar,
@@ -13,9 +14,7 @@ import {
   Typography
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
 import { makeStyles } from '@mui/styles';
 import * as React from 'react';
 import { useState } from 'react';
@@ -165,15 +164,21 @@ function Header(props) {
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
-              <DialogTitle id="alert-dialog-title">
-                {"Use Google's location service?"}
-              </DialogTitle>
+              <IconButton
+                aria-label="close"
+                onClick={handleClose}
+                sx={{
+                  position: 'absolute',
+                  right: 1,
+                  top: 1,
+                  color: (theme) => theme.palette.grey[500],
+                }}
+              >
+                <CloseIcon fontSize="large" />
+              </IconButton>
               <DialogContent>
-                <Register />
+                <Register onCloseDialog={handleClose} />
               </DialogContent>
-              <DialogActions>
-                <Button onClick={handleClose}>Cancle</Button>
-              </DialogActions>
             </Dialog>
           </Box>
         </Toolbar>

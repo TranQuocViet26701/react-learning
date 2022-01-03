@@ -1,9 +1,48 @@
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useSnackbar } from 'notistack';
+import PropTypes from 'prop-types';
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { register } from '../../userSlice';
 import RegisterForm from '../RegisterForm';
 
 function Register(props) {
-  const handleSubmit = (values) => {
-    console.log('Register submit: ', values);
+  const { onCloseDialog } = props;
+
+  const dispatch = useDispatch();
+  const { enqueueSnackbar } = useSnackbar();
+  const handleSubmit = async (values) => {
+    try {
+      // auto set username = email
+      values.username = values.email;
+
+      const action = register(values);
+      const resultAction = await dispatch(action);
+      const data = unwrapResult(resultAction);
+
+      // close dialog
+      if (onCloseDialog) {
+        onCloseDialog();
+      }
+
+      // register successful
+      console.log('New user: ', data);
+      enqueueSnackbar('Register successful!!!', {
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        variant: 'success',
+      });
+    } catch (error) {
+      enqueueSnackbar(error.message, {
+        anchorOrigin: {
+          vertical: 'top',
+          horizontal: 'right',
+        },
+        variant: 'error',
+      });
+    }
   };
   return (
     <div>
@@ -12,6 +51,12 @@ function Register(props) {
   );
 }
 
-Register.propTypes = {};
+Register.propTypes = {
+  onCloseDialog: PropTypes.func,
+};
+
+Register.defaultProps = {
+  onCloseDialog: null,
+};
 
 export default Register;

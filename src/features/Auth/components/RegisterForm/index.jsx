@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { LockOutlined } from '@mui/icons-material';
-import { Avatar, Box, Button, Typography } from '@mui/material';
+import { Avatar, Box, Button, LinearProgress, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,6 +10,10 @@ import PasswordField from '../../../../components/form-controls/PasswordField';
 
 RegisterForm.propTypes = {
   onSubmit: PropTypes.func,
+};
+
+RegisterForm.defaultProps = {
+  onSubmit: null,
 };
 
 function RegisterForm(props) {
@@ -39,6 +43,8 @@ function RegisterForm(props) {
       .oneOf([yup.ref('password')], 'Password dose not match'),
   });
 
+  const { onSubmit } = props;
+
   const form = useForm({
     defaultValues: {
       fullName: '',
@@ -49,12 +55,11 @@ function RegisterForm(props) {
     resolver: yupResolver(schema),
   });
 
-  const handleSubmit = (values) => {
-    const { onSubmit } = props;
-    if (onSubmit) onSubmit(values);
-
-    form.reset();
+  const handleSubmit = async (values) => {
+    if (onSubmit) await onSubmit(values);
   };
+
+  const { isSubmitting } = form.formState;
 
   return (
     <Box
@@ -63,8 +68,11 @@ function RegisterForm(props) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        position: 'relative',
       }}
     >
+      {isSubmitting && <LinearProgress sx={{ width: '100%', mb: '5px' }} />}
+
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
         <LockOutlined />
       </Avatar>
@@ -89,6 +97,7 @@ function RegisterForm(props) {
           variant="contained"
           sx={{ my: 2 }}
           color="primary"
+          disabled={isSubmitting}
         >
           Create an account
         </Button>
