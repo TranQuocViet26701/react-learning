@@ -11,16 +11,17 @@ import {
   MenuItem,
   Toolbar,
   Tooltip,
-  Typography
+  Typography,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import { makeStyles } from '@mui/styles';
 import * as React from 'react';
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import Login from '../../features/Auth/components/Login';
 import Register from '../../features/Auth/components/Register';
+import { logout } from '../../features/Auth/userSlice';
 
 const pages = [
   {
@@ -46,24 +47,15 @@ const MODE = {
   REGISTER: 'register',
 };
 
-const useStyles = makeStyles({
-  root: {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-  },
-  link: {
-    textDecoration: 'none',
-  },
-});
-
 function Header(props) {
-  const classes = useStyles();
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { current } = user;
+  const isLogined = !!current.id;
+
   const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const anchorElOpen = Boolean(anchorEl);
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(MODE.LOGIN);
 
@@ -75,12 +67,28 @@ function Header(props) {
     setAnchorElNav(null);
   };
 
+  // handle Menu's User
+  const handleOpenMenu = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleLogoutClick = () => {
+    const action = logout();
+    dispatch(action);
+
+    setAnchorEl(null);
   };
 
   return (
@@ -93,7 +101,7 @@ function Header(props) {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            <NavLink to="/" className={classes.link}>
+            <NavLink to="/" sx={{ textDecoration: 'none' }}>
               HappyShop
             </NavLink>
           </Typography>
@@ -142,7 +150,7 @@ function Header(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            <NavLink to="/" className={classes.link}>
+            <NavLink to="/" sx={{ textDecoration: 'none' }}>
               HappyShop
             </NavLink>
           </Typography>
@@ -161,11 +169,45 @@ function Header(props) {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleClickOpen} sx={{ p: 0 }}>
-                <Avatar alt="Vemy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
-            </Tooltip>
+            {isLogined && (
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    alt={current.fullName}
+                    src="/static/images/avatar/2.jpg"
+                  />
+                </IconButton>
+              </Tooltip>
+            )}
+
+            {!isLogined && (
+              <Button sx={{ color: '#fff' }} onClick={handleClickOpen}>
+                Login
+              </Button>
+            )}
+
+            {/* Menu */}
+            <Menu
+              anchorEl={anchorEl}
+              open={anchorElOpen}
+              onClose={handleCloseMenu}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'center',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }}
+            >
+              <MenuItem onClick={handleCloseMenu}>My account</MenuItem>
+              <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+            </Menu>
+
+            {/* Dialog form */}
             <Dialog
               open={open}
               aria-labelledby="alert-dialog-title"
