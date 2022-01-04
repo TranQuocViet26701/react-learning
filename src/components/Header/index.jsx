@@ -1,5 +1,4 @@
-import CloseIcon from '@mui/icons-material/Close';
-import MenuIcon from '@mui/icons-material/Menu';
+import { Close as CloseIcon, Menu as MenuIcon } from '@mui/icons-material';
 import {
   AppBar,
   Avatar,
@@ -7,6 +6,7 @@ import {
   Button,
   Container,
   IconButton,
+  Link,
   Menu,
   MenuItem,
   Toolbar,
@@ -19,6 +19,7 @@ import { makeStyles } from '@mui/styles';
 import * as React from 'react';
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import Login from '../../features/Auth/components/Login';
 import Register from '../../features/Auth/components/Register';
 
 const pages = [
@@ -40,6 +41,11 @@ const pages = [
   },
 ];
 
+const MODE = {
+  LOGIN: 'login',
+  REGISTER: 'register',
+};
+
 const useStyles = makeStyles({
   root: {
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
@@ -59,6 +65,7 @@ function Header(props) {
   const classes = useStyles();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [open, setOpen] = useState(false);
+  const [mode, setMode] = useState(MODE.LOGIN);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -169,15 +176,47 @@ function Header(props) {
                 onClick={handleClose}
                 sx={{
                   position: 'absolute',
-                  right: 1,
-                  top: 1,
+                  right: 10,
+                  top: 10,
                   color: (theme) => theme.palette.grey[500],
                 }}
               >
-                <CloseIcon fontSize="large" />
+                <CloseIcon />
               </IconButton>
               <DialogContent>
-                <Register onCloseDialog={handleClose} />
+                {mode === MODE.REGISTER && (
+                  <>
+                    <Register onCloseDialog={handleClose} />
+
+                    <Box textAlign="center">
+                      <Link
+                        component="button"
+                        variant="body1"
+                        underline="none"
+                        onClick={() => setMode(MODE.LOGIN)}
+                      >
+                        Already have an account? Login here.
+                      </Link>
+                    </Box>
+                  </>
+                )}
+
+                {mode === MODE.LOGIN && (
+                  <>
+                    <Login onCloseDialog={handleClose} />
+
+                    <Box textAlign="center">
+                      <Link
+                        component="button"
+                        variant="body1"
+                        underline="none"
+                        onClick={() => setMode(MODE.REGISTER)}
+                      >
+                        Don't have an account? Register here.
+                      </Link>
+                    </Box>
+                  </>
+                )}
               </DialogContent>
             </Dialog>
           </Box>
