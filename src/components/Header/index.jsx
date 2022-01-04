@@ -51,7 +51,7 @@ function Header(props) {
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { current } = user;
-  const isLogined = !!current.id;
+  const isLoggedIn = !!current.id;
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -76,11 +76,11 @@ function Header(props) {
     setAnchorEl(null);
   };
 
-  const handleClickOpen = () => {
+  const handleClickOpenDialog = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleCloseDialog = () => {
     setOpen(false);
   };
 
@@ -101,7 +101,7 @@ function Header(props) {
             component="div"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            <NavLink to="/" sx={{ textDecoration: 'none' }}>
+            <NavLink to="/" style={{ textDecoration: 'none', color: '#fff' }}>
               HappyShop
             </NavLink>
           </Typography>
@@ -150,7 +150,7 @@ function Header(props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            <NavLink to="/" sx={{ textDecoration: 'none' }}>
+            <NavLink to="/" style={{ textDecoration: 'none', color: '#fff' }}>
               HappyShop
             </NavLink>
           </Typography>
@@ -169,7 +169,7 @@ function Header(props) {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            {isLogined && (
+            {isLoggedIn && (
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenMenu} sx={{ p: 0 }}>
                   <Avatar
@@ -180,8 +180,8 @@ function Header(props) {
               </Tooltip>
             )}
 
-            {!isLogined && (
-              <Button sx={{ color: '#fff' }} onClick={handleClickOpen}>
+            {!isLoggedIn && (
+              <Button sx={{ color: '#fff' }} onClick={handleClickOpenDialog}>
                 Login
               </Button>
             )}
@@ -215,7 +215,7 @@ function Header(props) {
             >
               <IconButton
                 aria-label="close"
-                onClick={handleClose}
+                onClick={handleCloseDialog}
                 sx={{
                   position: 'absolute',
                   right: 10,
@@ -228,7 +228,7 @@ function Header(props) {
               <DialogContent>
                 {mode === MODE.REGISTER && (
                   <>
-                    <Register onCloseDialog={handleClose} />
+                    <Register onCloseDialog={handleCloseDialog} />
 
                     <Box textAlign="center">
                       <Link
@@ -245,7 +245,7 @@ function Header(props) {
 
                 {mode === MODE.LOGIN && (
                   <>
-                    <Login onCloseDialog={handleClose} />
+                    <Login onCloseDialog={handleCloseDialog} />
 
                     <Box textAlign="center">
                       <Link
