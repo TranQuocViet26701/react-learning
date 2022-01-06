@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Paper } from '@mui/material';
+import { Box, Container, Grid, Pagination, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import productApi from '../../../api/productApi';
 import ProductList from '../components/ProductList';
@@ -6,14 +6,25 @@ import ProductSkeletonList from '../components/ProductSkeletonList';
 
 function ListPage() {
   const [productList, setProductList] = useState([]);
+  const [pagination, setPagination] = useState({
+    page: 1,
+    limit: 12,
+    total: 12,
+  });
   const [loading, setLoading] = useState(true);
+  const [filters, setFilters] = useState({
+    _page: 1,
+    _limit: 12,
+  });
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const params = { _limit: 50, _page: 1 };
-        const productList = await productApi.getAll(params);
-        setProductList(productList);
+        const { data, pagination } = await productApi.getAll(filters);
+
+        // set data and pagination
+        setProductList(data);
+        setPagination(pagination);
       } catch (error) {
         console.log('Fail to fetch product list: ', error);
       }
@@ -22,7 +33,14 @@ function ListPage() {
     };
 
     fetchProducts();
-  }, []);
+  }, [filters]);
+
+  const handlePageChange = (event, value) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      _page: value,
+    }));
+  };
 
   return (
     <Box>
@@ -44,11 +62,29 @@ function ListPage() {
           >
             <Paper elevation={0}>
               {loading ? (
-                <ProductSkeletonList />
+                <ProductSkeletonList length={filters.limit} />
               ) : (
-                <ProductList data={productList.data} />
+                <ProductList data={productList} />
               )}
             </Paper>
+
+            <Pagination
+              color="primary"
+              count={Math.ceil(pagination.total / pagination.limit)}
+              page={pagination.page}
+              onChange={handlePageChange}
+              defaultPage={6}
+              sx={[
+                {
+                  my: '14px',
+                },
+                {
+                  '& ul': {
+                    justifyContent: 'flex-end',
+                  },
+                },
+              ]}
+            />
           </Grid>
         </Grid>
       </Container>
