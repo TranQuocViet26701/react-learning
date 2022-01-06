@@ -1,8 +1,10 @@
 import { Box, Container, Grid, Pagination, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import productApi from '../../../api/productApi';
+import ProductFilters from '../components/ProductFilters';
 import ProductList from '../components/ProductList';
 import ProductSkeletonList from '../components/ProductSkeletonList';
+import ProductSort from '../components/ProductSort';
 
 function ListPage() {
   const [productList, setProductList] = useState([]);
@@ -15,6 +17,7 @@ function ListPage() {
   const [filters, setFilters] = useState({
     _page: 1,
     _limit: 12,
+    _sort: 'salePrice:ASC',
   });
 
   useEffect(() => {
@@ -40,20 +43,41 @@ function ListPage() {
       ...prevFilters,
       _page: value,
     }));
+    setLoading(true);
+  };
+
+  const handleSortChange = (newValue) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      _sort: newValue,
+    }));
+    setLoading(true);
+  };
+
+  const handleFilterChange = (newFilters) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      ...newFilters,
+    }));
+    setLoading(true);
   };
 
   return (
     <Box>
       <Container>
         <Grid container spacing={0.5}>
+          {/* Left column */}
           <Grid
             item
             sx={{
               width: '250px',
             }}
           >
-            <Paper elevation={0}>Left column</Paper>
+            <Paper elevation={0}>
+              <ProductFilters filters={filters} onChange={handleFilterChange} />
+            </Paper>
           </Grid>
+          {/* Right column */}
           <Grid
             item
             sx={{
@@ -61,6 +85,11 @@ function ListPage() {
             }}
           >
             <Paper elevation={0}>
+              <ProductSort
+                value={filters._sort}
+                onSortChange={handleSortChange}
+              />
+
               {loading ? (
                 <ProductSkeletonList length={filters.limit} />
               ) : (
