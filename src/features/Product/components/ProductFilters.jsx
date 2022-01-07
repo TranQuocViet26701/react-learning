@@ -9,8 +9,16 @@ function ProductFilters({ filters, onChange }) {
     if (!onChange) return;
 
     const newFilters = {
-      ...filters,
       'category.id': newCategoryId,
+    };
+    onChange(newFilters);
+  };
+
+  const handleChangeByPrice = (newPrice) => {
+    if (!onChange) return;
+
+    const newFilters = {
+      ...newPrice,
     };
     onChange(newFilters);
   };
@@ -19,7 +27,7 @@ function ProductFilters({ filters, onChange }) {
     <>
       <FilterByCategory onChange={handleChangeByCategory} />
       <Divider />
-      <FilterByPrice />
+      <FilterByPrice onChange={handleChangeByPrice} />
     </>
   );
 }

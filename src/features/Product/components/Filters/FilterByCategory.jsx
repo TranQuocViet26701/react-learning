@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, List, ListItem } from '@mui/material';
 import categoryApi from '../../../../api/categoryApi';
 
 function FilterByCategory({ onChange }) {
@@ -23,19 +23,33 @@ function FilterByCategory({ onChange }) {
 
   return (
     <Box sx={{ p: 2 }}>
-      <Typography sx={{ fontSize: '14px', pb: '14px', fontWeight: '500' }}>
-        DANH MỤC SẢN PHẨM
-      </Typography>
+      <Typography variant="subtitle2">DANH MỤC SẢN PHẨM</Typography>
 
-      {categoryList.map((category) => (
-        <Typography
-          key={category.id}
-          sx={{ fontSize: '14px', pb: '5px', cursor: 'pointer' }}
-          onClick={() => handleCategoryChange(category)}
-        >
-          {category.name}
-        </Typography>
-      ))}
+      <List>
+        {categoryList.map((category) => (
+          <ListItem
+            key={category.id}
+            sx={{
+              p: '4px 0',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                cursor: 'pointer',
+                transition: 'all .25s ease',
+
+                '&:hover': {
+                  color: 'primary.dark',
+                },
+              }}
+              onClick={() => handleCategoryChange(category)}
+            >
+              {category.name}
+            </Typography>
+          </ListItem>
+        ))}
+      </List>
     </Box>
   );
 }
