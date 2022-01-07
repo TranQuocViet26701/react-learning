@@ -1,6 +1,7 @@
 import { Box, Container, Grid, Pagination, Paper } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import productApi from '../../../api/productApi';
+import FilterViewer from '../components/FilterViewer';
 import ProductFilters from '../components/ProductFilters';
 import ProductList from '../components/ProductList';
 import ProductSkeletonList from '../components/ProductSkeletonList';
@@ -23,6 +24,7 @@ function ListPage() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
+        console.log(filters);
         const { data, pagination } = await productApi.getAll(filters);
 
         // set data and pagination
@@ -55,10 +57,32 @@ function ListPage() {
   };
 
   const handleFilterChange = (newFilters) => {
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      ...newFilters,
-    }));
+    setFilters((prevFilters) => {
+      const changedFilters = {
+        ...prevFilters,
+        ...newFilters,
+      };
+
+      // delete isFreeShip and isPromotion if they are set to false
+      const newFiltersKeys = Object.keys(changedFilters);
+
+      if (newFiltersKeys.includes('isFreeShip') && !changedFilters.isFreeShip) {
+        delete changedFilters.isFreeShip;
+      }
+      if (
+        newFiltersKeys.includes('isPromotion') &&
+        !changedFilters.isPromotion
+      ) {
+        delete changedFilters.isPromotion;
+      }
+
+      return changedFilters;
+    });
+    setLoading(true);
+  };
+
+  const handleChange = (newFilters) => {
+    setFilters(newFilters);
     setLoading(true);
   };
 
@@ -85,10 +109,13 @@ function ListPage() {
             }}
           >
             <Paper elevation={0}>
+              {/* Sort */}
               <ProductSort
                 value={filters._sort}
                 onSortChange={handleSortChange}
               />
+              {/* Filter */}
+              <FilterViewer filters={filters} onChange={handleChange} />
 
               {loading ? (
                 <ProductSkeletonList length={filters.limit} />
