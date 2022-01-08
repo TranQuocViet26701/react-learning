@@ -156,15 +156,18 @@ function Header(props) {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
+              <Box
                 key={page.name}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{
+                  '& > a': {
+                    textDecoration: 'none',
+                  },
+                }}
               >
-                <NavLink to={page.to} style={{ textDecoration: 'none' }}>
-                  {page.name}
+                <NavLink to={page.to}>
+                  <Button sx={{ color: '#fff' }}>{page.name}</Button>
                 </NavLink>
-              </Button>
+              </Box>
             ))}
           </Box>
 

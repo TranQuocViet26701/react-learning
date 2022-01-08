@@ -8,7 +8,7 @@ function ProductSort({ value, onSortChange }) {
   };
 
   return (
-    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+    <Box sx={{ pl: 2 }}>
       <Tabs
         value={value}
         onChange={handleSortChange}

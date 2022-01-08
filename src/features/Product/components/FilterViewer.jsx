@@ -1,4 +1,4 @@
-import { Box, Chip, Link } from '@mui/material';
+import { Box, Chip, Link, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 
@@ -14,7 +14,11 @@ const services = [
 const FILTER_LIST = [
   {
     id: 1,
-    getLabel: () => 'FREESHIP',
+    getLabel: () => (
+      <Typography variant="body2" sx={{ lineHeight: 'normal' }}>
+        FREESHIP
+      </Typography>
+    ),
     isVisible: () => true,
     isActive: (filters) => Boolean(filters.isFreeShip),
     isDeletable: false,
@@ -33,7 +37,11 @@ const FILTER_LIST = [
   },
   {
     id: 2,
-    getLabel: () => 'Có khuyến mãi',
+    getLabel: () => (
+      <Typography variant="body2" sx={{ lineHeight: 'normal' }}>
+        Có khuyến mãi
+      </Typography>
+    ),
     isVisible: (filters) =>
       Object.keys(filters).includes('isPromotion') &&
       Boolean(filters.isPromotion),
@@ -52,7 +60,11 @@ const FILTER_LIST = [
   },
   {
     id: 3,
-    getLabel: (filters) => services[filters['category.id'] - 1],
+    getLabel: (filters) => (
+      <Typography variant="body2" sx={{ lineHeight: 'normal' }}>
+        {services[filters['category.id'] - 1]}
+      </Typography>
+    ),
     isVisible: (filters) => Object.keys(filters).includes('category.id'),
     isActive: (filters) => Object.keys(filters).includes('category.id'),
     isDeletable: true,
@@ -69,10 +81,16 @@ const FILTER_LIST = [
   },
   {
     id: 4,
-    getLabel: (filters) =>
-      `${new Intl.NumberFormat('de-DE').format(
+    getLabel: (filters) => (
+      <Typography
+        variant="body2"
+        sx={{ lineHeight: 'normal' }}
+      >{`${new Intl.NumberFormat('de-DE').format(
         filters.salePrice_gte
-      )}đ đến ${new Intl.NumberFormat('de-DE').format(filters.salePrice_lte)}đ`,
+      )}đ đến ${new Intl.NumberFormat('de-DE').format(
+        filters.salePrice_lte
+      )}đ`}</Typography>
+    ),
     isVisible: (filters) =>
       Object.keys(filters).includes('salePrice_gte') &&
       Object.keys(filters).includes('salePrice_lte'),
@@ -153,6 +171,7 @@ function FilterViewer({ filters = {}, onChange = null }) {
           size="small"
           sx={{
             mr: 1,
+            alignItems: 'center',
           }}
         />
       ))}
@@ -164,7 +183,7 @@ function FilterViewer({ filters = {}, onChange = null }) {
           underline="none"
           onClick={() => handleRemoveAll(filters)}
         >
-          Xoá tất cả
+          Xóa tất cả
         </Link>
       )}
     </Box>
