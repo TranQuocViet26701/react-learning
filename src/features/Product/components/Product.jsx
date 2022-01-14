@@ -1,17 +1,28 @@
 import { Box, Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { IMAGE_PLACEHOLDER, STATIC_HOST } from '../../../constants/index';
 import { utils } from '../../../helpers';
 
 function Product({ product }) {
+  const history = useHistory();
   const thumbnailUrl = product.thumbnail?.url
     ? `${STATIC_HOST}${product.thumbnail.url}`
     : IMAGE_PLACEHOLDER;
   const promotionPercent = `-${product.promotionPercent}%`;
 
+  const handleProductClick = () => {
+    history.push(`/products/${product.id}`);
+  };
+
   return (
-    <Box>
+    <Box
+      onClick={handleProductClick}
+      sx={{
+        cursor: 'pointer',
+      }}
+    >
       <Box sx={{ p: 1 }}>
         <img src={thumbnailUrl} alt={product.name} width="100%" />
       </Box>
