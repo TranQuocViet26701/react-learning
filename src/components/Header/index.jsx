@@ -1,7 +1,9 @@
 import { Close as CloseIcon, Menu as MenuIcon } from '@mui/icons-material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {
   AppBar,
   Avatar,
+  Badge,
   Box,
   Button,
   Container,
@@ -18,10 +20,11 @@ import DialogContent from '@mui/material/DialogContent';
 import * as React from 'react';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import Login from '../../features/Auth/components/Login';
 import Register from '../../features/Auth/components/Register';
 import { logout } from '../../features/Auth/userSlice';
+import { cartItemsCountSelector } from '../../features/Cart/selectors';
 
 const pages = [
   {
@@ -49,9 +52,11 @@ const MODE = {
 
 function Header(props) {
   const user = useSelector((state) => state.user);
+  const cartItemsCount = useSelector(cartItemsCountSelector);
   const dispatch = useDispatch();
   const { current } = user;
   const isLoggedIn = !!current.id;
+  const history = useHistory();
 
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -89,6 +94,10 @@ function Header(props) {
     dispatch(action);
 
     setAnchorEl(null);
+  };
+
+  const handleCartClick = () => {
+    history.push('/cart');
   };
 
   return (
@@ -182,6 +191,17 @@ function Header(props) {
                 </IconButton>
               </Tooltip>
             )}
+
+            <IconButton
+              size="large"
+              aria-label=""
+              color="inherit"
+              onClick={handleCartClick}
+            >
+              <Badge badgeContent={cartItemsCount} color="error">
+                <ShoppingCartIcon />
+              </Badge>
+            </IconButton>
 
             {!isLoggedIn && (
               <Button sx={{ color: '#fff' }} onClick={handleClickOpenDialog}>

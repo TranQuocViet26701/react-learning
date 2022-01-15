@@ -7,7 +7,9 @@ import {
   Paper,
 } from '@mui/material';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { addToCart } from '../../Cart/cartSlice';
 import AddToCart from '../components/AddToCart';
 import ProductAdditional from '../components/ProductAdditional';
 import ProductDescription from '../components/ProductDescription';
@@ -22,11 +24,18 @@ function DetailPage() {
     params: { productId },
     url,
   } = useRouteMatch();
+  const dispatch = useDispatch();
 
   const { product, loading } = useProductDetail(productId);
 
   const handleAddToCartSubmit = (formValues) => {
-    console.log('Add to cart: ', formValues);
+    const action = addToCart({
+      id: product.id,
+      product,
+      quantity: formValues.quantity,
+    });
+
+    dispatch(action);
   };
 
   if (loading) {
