@@ -8,7 +8,7 @@ import RegisterForm from '../RegisterForm';
 
 function Register(props) {
   const { onCloseDialog } = props;
-
+  
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const handleSubmit = async (values) => {
@@ -29,16 +29,16 @@ function Register(props) {
       console.log('New user: ', data);
       enqueueSnackbar('Register successful!!!', {
         anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: 'bottom',
+          horizontal: 'left',
         },
         variant: 'success',
       });
     } catch (error) {
       enqueueSnackbar(error.message, {
         anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: 'bottom',
+          horizontal: 'left',
         },
         variant: 'error',
       });

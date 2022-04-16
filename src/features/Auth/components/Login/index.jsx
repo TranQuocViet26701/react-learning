@@ -29,8 +29,8 @@ function Login(props) {
     } catch (error) {
       enqueueSnackbar(error.message, {
         anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: 'bottom',
+          horizontal: 'left',
         },
         variant: 'error',
       });

@@ -1,17 +1,19 @@
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import { cartItemsSelector } from '../Cart/selectors';
 import './Card.scss';
 import CardOption from './components/CardOption';
 import InputField from './components/InputField';
+import { removeCart } from '../Cart/cartSlice';
 
 function Card() {
   const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const cartItems = useSelector(cartItemsSelector);
+  const dispatch = useDispatch();
   const [option, setOption] = useState('visa');
 
   const { control, handleSubmit } = useForm({
@@ -28,22 +30,22 @@ function Card() {
   };
 
   const handleFormSubmit = (data) => {
-    enqueueSnackbar('You must be login!', {
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right',
-      },
-      variant: 'error',
-    });
     if (!localStorage.getItem('user')) {
+      enqueueSnackbar('You must be login!', {
+        anchorOrigin: {
+          vertical: 'bottom',
+          horizontal: 'left',
+        },
+        variant: 'error',
+      });
       return;
     }
 
     if (cartItems.length === 0) {
       enqueueSnackbar('Your cart is empty!', {
         anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: 'bottom',
+          horizontal: 'left',
         },
         variant: 'error',
       });
@@ -57,11 +59,12 @@ function Card() {
       });
       enqueueSnackbar('Check out successful!', {
         anchorOrigin: {
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: 'bottom',
+          horizontal: 'left',
         },
         variant: 'success',
       });
+      dispatch(removeCart()); //remove cartItems in state and localStorage when check out successful
       history.push('/');
     }
   };
