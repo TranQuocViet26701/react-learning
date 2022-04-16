@@ -31,18 +31,6 @@ const pages = [
     name: 'Product',
     to: '/products',
   },
-  {
-    name: 'Todo',
-    to: '/todos',
-  },
-  {
-    name: 'Album',
-    to: '/albums',
-  },
-  {
-    name: 'Counter',
-    to: '/counter',
-  },
 ];
 
 const MODE = {
@@ -101,33 +89,33 @@ function Header(props) {
   };
 
   return (
-    <AppBar position="static">
-      <Container maxWidth="xl">
+    <AppBar position='static'>
+      <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
-            component="div"
+            component='div'
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
           >
-            <NavLink to="/" style={{ textDecoration: 'none', color: '#fff' }}>
+            <NavLink to='/' style={{ textDecoration: 'none', color: '#fff' }}>
               HappyShop
             </NavLink>
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
-              size="large"
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
+              size='large'
+              aria-label='account of current user'
+              aria-controls='menu-appbar'
+              aria-haspopup='true'
               onClick={handleOpenNavMenu}
-              color="inherit"
+              color='inherit'
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id="menu-appbar"
+              id='menu-appbar'
               anchorEl={anchorElNav}
               anchorOrigin={{
                 vertical: 'bottom',
@@ -146,7 +134,7 @@ function Header(props) {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
+                  <Typography textAlign='center'>
                     <NavLink to={page.to}>{page.name}</NavLink>
                   </Typography>
                 </MenuItem>
@@ -154,12 +142,12 @@ function Header(props) {
             </Menu>
           </Box>
           <Typography
-            variant="h6"
+            variant='h6'
             noWrap
-            component="div"
+            component='div'
             sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
           >
-            <NavLink to="/" style={{ textDecoration: 'none', color: '#fff' }}>
+            <NavLink to='/' style={{ textDecoration: 'none', color: '#fff' }}>
               HappyShop
             </NavLink>
           </Typography>
@@ -182,23 +170,23 @@ function Header(props) {
 
           <Box sx={{ flexGrow: 0 }}>
             {isLoggedIn && (
-              <Tooltip title="Open settings">
+              <Tooltip title='Open settings'>
                 <IconButton onClick={handleOpenMenu} sx={{ p: 0 }}>
                   <Avatar
                     alt={current.fullName}
-                    src="/static/images/avatar/2.jpg"
+                    src='/static/images/avatar/2.jpg'
                   />
                 </IconButton>
               </Tooltip>
             )}
 
             <IconButton
-              size="large"
-              aria-label=""
-              color="inherit"
+              size='large'
+              aria-label=''
+              color='inherit'
               onClick={handleCartClick}
             >
-              <Badge badgeContent={cartItemsCount} color="error">
+              <Badge badgeContent={cartItemsCount} color='error'>
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
@@ -233,11 +221,11 @@ function Header(props) {
             {/* Dialog form */}
             <Dialog
               open={open}
-              aria-labelledby="alert-dialog-title"
-              aria-describedby="alert-dialog-description"
+              aria-labelledby='alert-dialog-title'
+              aria-describedby='alert-dialog-description'
             >
               <IconButton
-                aria-label="close"
+                aria-label='close'
                 onClick={handleCloseDialog}
                 sx={{
                   position: 'absolute',
@@ -253,11 +241,11 @@ function Header(props) {
                   <>
                     <Register onCloseDialog={handleCloseDialog} />
 
-                    <Box textAlign="center">
+                    <Box textAlign='center'>
                       <Link
-                        component="button"
-                        variant="body1"
-                        underline="none"
+                        component='button'
+                        variant='body1'
+                        underline='none'
                         onClick={() => setMode(MODE.LOGIN)}
                       >
                         Already have an account? Login here.
@@ -270,11 +258,11 @@ function Header(props) {
                   <>
                     <Login onCloseDialog={handleCloseDialog} />
 
-                    <Box textAlign="center">
+                    <Box textAlign='center'>
                       <Link
-                        component="button"
-                        variant="body1"
-                        underline="none"
+                        component='button'
+                        variant='body1'
+                        underline='none'
                         onClick={() => setMode(MODE.REGISTER)}
                       >
                         Don't have an account? Register here.
